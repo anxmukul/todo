@@ -17,7 +17,7 @@ type Todo struct {
 }
 
 func (t Todo) ShowTodo(id int64, title string, content string) error {
-	// fmt.Println("This will display one todo")
+	fmt.Println("This will display one todo")
 	if id <= 0 {
 		err := errors.New("Empty: no todo available to displat")
 		return err
@@ -30,6 +30,6 @@ func (t Todo) ShowTodo(id int64, title string, content string) error {
 	return nil
 }
 
-func GetTodoView() TodoDisplayer {
+func NewGetTodoView() TodoDisplayer {
 	return Todo{}
 }

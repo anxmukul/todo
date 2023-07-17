@@ -20,7 +20,8 @@ func getStringInput() string {
 }
 func main() {
 	var contr controller.Controller
-	contr = controller.NewTodoController()
+	contr = controller.NewTodoController()  // {model: addres, view: nil }  initialization occur here
+	
 	var choice int
 	fmt.Scanf("%d", &choice)
 	if choice == 1 {
