@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/anxmukul/todo/model"
+	"github.com/anxmukul/todo/view"
 )
 
 type Controller interface {
@@ -18,8 +19,12 @@ type TodoController struct {
 func (t TodoController) Create(title string, content string) (*model.ToDo, error) {
 	// fmt.Printf("In Controller %s\t%s\n", title, content)
 	model := model.DbBasedModel()
-	newTodo , err := model.CreateTodo(title, content);
-
+	newTodo, err := model.CreateTodo(title, content)
+	if err != nil {
+		return nil, err
+	}
+	todoView := view.GetTodoView()
+	todoView.ShowTodo(newTodo.Id, newTodo.Title, newTodo.Content)
 	return newTodo, err
 
 }
@@ -27,23 +32,42 @@ func (t TodoController) Create(title string, content string) (*model.ToDo, error
 func (t TodoController) SearchById(id int64) (*model.ToDo, error) {
 	model := model.DbBasedModel()
 	todo, err := model.GetTodoById(id)
-	return todo, err;
+	if err != nil {
+		return nil, err
+	}
+	todoView := view.GetTodoView()
+	todoView.ShowTodo(todo.Id, todo.Title, todo.Content)
+	return todo, err
 
 }
 
 func (t TodoController) SearchByTitle(title string) (*[]model.ToDo, error) {
 	model := model.DbBasedModel()
 	todos, err := model.GetTodoByTitle(title)
-	return todos, err;
+	if err != nil {
+		return nil, err
+	}
+	todoView := view.GetTodoView()
+	for _, element := range *todos {
+		todoView.ShowTodo(element.Id, element.Title, element.Content)
+	}
+	return todos, err
 
 }
 
-func (t TodoController) DeleteByTitle(string) (*model.ToDo, error) {
-	return nil, nil
+func (t TodoController) DeleteByTitle(title string) (*model.ToDo, error) {
+	model := model.DbBasedModel()
+	todo, err := model.DeleteByTitle(title)
+	if err != nil {
+		return nil, err
+	}
+	todoView := view.GetTodoView()
+	todoView.ShowTodo(todo.Id, todo.Title, todo.Content)
+	return todo, err
 }
 
 func NewTodoController() Controller {
 	return TodoController{
-		model : model.DbBasedModel(),	// how this todo{} struct compatible with Controller Interface return type.
+		model: model.DbBasedModel(), // how this todo{} struct compatible with Controller Interface return type.
 	}
-}	
+}
