@@ -8,6 +8,7 @@ import (
 
 type TodoDisplayer interface {
 	ShowTodo(int64, string, string) error
+	ShowManyTodo(*[]Todo) error
 }
 
 type Todo struct {
@@ -26,6 +27,13 @@ func (t Todo) ShowTodo(id int64, title string, content string) error {
 	t.Title = title
 	t.Content = content
 	todos, _ := json.MarshalIndent(t, "", "  ")
+	fmt.Println(string(todos))
+	return nil
+}
+
+func (t Todo) ShowManyTodo(todoArray *[]Todo) error {
+	fmt.Println("This will display Many todo")
+	todos, _ := json.MarshalIndent(todoArray, "", "  ")
 	fmt.Println(string(todos))
 	return nil
 }

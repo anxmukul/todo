@@ -47,9 +47,12 @@ func (t TodoController) SearchByTitle(title string) (*[]model.ToDo, error) {
 	if err != nil {
 		return nil, err
 	}
+	var todoArray []view.Todo
 	for _, element := range *todos {
-		err = t.view.ShowTodo(element.Id, element.Title, element.Content)
+		viewtodo := view.Todo{Id: element.Id, Title: element.Title, Content: element.Content}
+		todoArray = append(todoArray, viewtodo)
 	}
+	err = t.view.ShowManyTodo(&todoArray)
 	return todos, err
 
 }
