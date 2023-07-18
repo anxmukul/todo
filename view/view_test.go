@@ -32,7 +32,7 @@ func TestNewGetTodoView(t *testing.T) {
 	res := NewGetTodoView()
 	fmt.Println("res = ", reflect.TypeOf(res))
 	if reflect.TypeOf(res) != reflect.TypeOf(todo) {
-		t.Errorf("got res of type %+v but expected %+v type", res, todo)
+		t.Errorf("got res of type %+v but expected %+v type", res, todo)	
 	} else {
 		fmt.Printf("got res of %+v type and expected %+v type", res, todo)
 	}

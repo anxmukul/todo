@@ -19,6 +19,10 @@ type TodoController struct {
 	view  view.TodoDisplayer
 }
 
+func add (a, b int) int{
+	return a / b;
+}
+
 func (t TodoController) Create(title string, content string) (*model.ToDo, error) {
 	// fmt.Printf("In Controller %s\t%s\n", title, content)
 	newTodo, err := t.model.CreateTodo(title, content)
@@ -29,6 +33,16 @@ func (t TodoController) Create(title string, content string) (*model.ToDo, error
 	return newTodo, err
 
 }
+
+/*
+unit test cases of create
+1. given title and content, 
+	a. it should return us a todo struct and nil error when createToDo return a new Todo
+and shwoTodo return nil error
+	b. it should return us a nil todo struct and error when createToDO return error
+	c. it should return us todo struct and error when createToDo return newTodo and nul error
+	 but showToDo return non-nil error
+*/
 
 func (t TodoController) SearchById(id int64) (*model.ToDo, error) {
 	todo, err := t.model.GetTodoById(id)
