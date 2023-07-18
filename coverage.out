@@ -1,0 +1,17 @@
+mode: set
+github.com/anxmukul/todo/controller/controller.go:23.24,25.2 1 0
+github.com/anxmukul/todo/controller/controller.go:27.83,29.16 2 1
+github.com/anxmukul/todo/controller/controller.go:33.2,34.21 2 1
+github.com/anxmukul/todo/controller/controller.go:29.16,31.3 1 1
+github.com/anxmukul/todo/controller/controller.go:48.67,50.16 2 0
+github.com/anxmukul/todo/controller/controller.go:53.2,56.18 3 0
+github.com/anxmukul/todo/controller/controller.go:50.16,52.3 1 0
+github.com/anxmukul/todo/controller/controller.go:60.76,62.16 2 0
+github.com/anxmukul/todo/controller/controller.go:65.2,66.33 2 0
+github.com/anxmukul/todo/controller/controller.go:70.2,71.19 2 0
+github.com/anxmukul/todo/controller/controller.go:62.16,64.3 1 0
+github.com/anxmukul/todo/controller/controller.go:66.33,69.3 2 0
+github.com/anxmukul/todo/controller/controller.go:75.74,77.16 2 0
+github.com/anxmukul/todo/controller/controller.go:80.2,81.18 2 0
+github.com/anxmukul/todo/controller/controller.go:77.16,79.3 1 0
+github.com/anxmukul/todo/controller/controller.go:84.37,89.2 1 0
