@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"fmt"
-
 	"github.com/anxmukul/todo/model"
 	"github.com/anxmukul/todo/view"
 )
@@ -19,24 +17,27 @@ type TodoController struct {
 	view  view.TodoDisplayer
 }
 
-func add (a, b int) int{
-	return a / b;
+func add(a, b int) int {
+	return a / b
 }
 
 func (t TodoController) Create(title string, content string) (*model.ToDo, error) {
-	// fmt.Printf("In Controller %s\t%s\n", title, content)
 	newTodo, err := t.model.CreateTodo(title, content)
 	if err != nil {
 		return nil, err
 	}
+	//newTodo: {id: 100, title: "foo"
 	err = t.view.ShowTodo(newTodo.Id, newTodo.Title, newTodo.Content)
+	if err != nil {
+		return newTodo, err
+	}
 	return newTodo, err
 
 }
 
 /*
 unit test cases of create
-1. given title and content, 
+1. given title and content,
 	a. it should return us a todo struct and nil error when createToDo return a new Todo
 and shwoTodo return nil error
 	b. it should return us a nil todo struct and error when createToDO return error
@@ -49,12 +50,21 @@ func (t TodoController) SearchById(id int64) (*model.ToDo, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(todo)
-
 	err = t.view.ShowTodo(todo.Id, todo.Title, todo.Content)
+	if err != nil {
+		return todo, err
+	}
 	return todo, err
 
 }
+
+/*
+1. given id
+	a. it should return us todo and nil error when GetTodoByTitle return todo with repective id
+	and nil err and ShowTodo return nil err
+	b. it should return nil todo struct and non nil error wnen GetTodoByTitle fail and return nil todo and err.
+	c. it should return todo struct and non nil error when GetTodoByTitle works fine but ShowTodo return non nil error
+*/
 
 func (t TodoController) SearchByTitle(title string) (*[]model.ToDo, error) {
 	todos, err := t.model.GetTodoByTitle(title)
@@ -67,6 +77,10 @@ func (t TodoController) SearchByTitle(title string) (*[]model.ToDo, error) {
 		todoArray = append(todoArray, viewtodo)
 	}
 	err = t.view.ShowManyTodo(&todoArray)
+	if err != nil {
+		return nil, err
+	}
+
 	return todos, err
 
 }
@@ -77,6 +91,9 @@ func (t TodoController) DeleteByTitle(title string) (*model.ToDo, error) {
 		return nil, err
 	}
 	err = t.view.ShowTodo(todo.Id, todo.Title, todo.Content)
+	if err != nil {
+		return todo, err
+	}
 	return todo, err
 }
 
