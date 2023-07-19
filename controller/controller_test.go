@@ -6,6 +6,7 @@ import (
 
 	"github.com/anxmukul/todo/mocks"
 	"github.com/anxmukul/todo/model"
+	"github.com/anxmukul/todo/view"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -207,3 +208,95 @@ func TestTodoController_DeleteByTitle(t *testing.T) {
 
 }
 
+func TestTodoController_SearchByTitle(t *testing.T) {
+	t.Run("should return the todo array when no error in model and view", func(t *testing.T) {
+		mockedModel := &mocks.TodoModel{}
+		mockedView := &mocks.TodoDisplayer{}
+		mockedTodo := &[]model.ToDo{{
+			Id:      10,
+			Title:   "foo",
+			Content: "bar"},
+			{
+				Id:      11,
+				Title:   "foo",
+				Content: "baar",
+			},
+		}
+		mockedviewTodo := &[]view.Todo{
+			{
+				Id:      10,
+				Title:   "foo",
+				Content: "bar"},
+			{
+				Id:      11,
+				Title:   "foo",
+				Content: "baar",
+			},
+		}
+		mockedModel.On("GetTodoByTitle", "foo").Return(mockedTodo, nil)
+		mockedView.On("ShowManyTodo", mockedviewTodo).Return(nil)
+		testController := TodoController{
+			model: mockedModel,
+			view:  mockedView,
+		}
+
+		receivedTodo, receivedError := testController.SearchByTitle("foo")
+		assert.NotNil(t, receivedTodo)
+		assert.Nil(t, receivedError)
+		// assert.Equal(t, int64(10), len(receivedTodo))
+		// assert.Equal(t, "", receivedTodo.Title)
+		// assert.Equal(t, "", receivedTodo.Content)
+	})
+	t.Run("should return the nil todo array and non nil error when GetTodoByTitile gives error", func(t *testing.T) {
+		mockedModel := &mocks.TodoModel{}
+		err := errors.New("No todo exits with given title")
+		mockedModel.On("GetTodoByTitle", "foo").Return(nil, err)
+		testController := TodoController{
+			model: mockedModel,
+		}
+		receivedTodo, receivedError := testController.SearchByTitle("foo")
+		assert.Nil(t, receivedTodo)
+		assert.NotNil(t, receivedError)
+	})
+
+	t.Run("should return the todo struct array and on nil errot when no error in model but view return error", func(t *testing.T) {
+		mockedModel := &mocks.TodoModel{}
+		mockedView := &mocks.TodoDisplayer{}
+		mockedTodo := &[]model.ToDo{{
+			Id:      10,
+			Title:   "foo",
+			Content: "bar"},
+			{
+				Id:      11,
+				Title:   "foo",
+				Content: "baar",
+			},
+		}
+		mockedviewTodo := &[]view.Todo{
+			{
+				Id:      10,
+				Title:   "foo",
+				Content: "bar"},
+			{
+				Id:      11,
+				Title:   "foo",
+				Content: "baar",
+			},
+		}
+		mockedModel.On("GetTodoByTitle", "foo").Return(mockedTodo, nil)
+		err := errors.New("Can't display todo")
+		mockedView.On("ShowManyTodo", mockedviewTodo).Return(err)
+		testController := TodoController{
+			model: mockedModel,
+			view:  mockedView,
+		}
+
+		receivedTodo, receivedError := testController.SearchByTitle("foo")
+		assert.NotNil(t, receivedTodo)
+		assert.NotNil(t, receivedError)
+		// assert.Equal(t, int64(10), len(receivedTodo))
+		// assert.Equal(t, "", receivedTodo.Title)
+		// assert.Equal(t, "", receivedTodo.Content)
+	})
+
+}
