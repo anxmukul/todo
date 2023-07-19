@@ -17,10 +17,6 @@ type TodoController struct {
 	view  view.TodoDisplayer
 }
 
-func add(a, b int) int {
-	return a / b
-}
-
 func (t TodoController) Create(title string, content string) (*model.ToDo, error) {
 	newTodo, err := t.model.CreateTodo(title, content)
 	if err != nil {
@@ -78,12 +74,19 @@ func (t TodoController) SearchByTitle(title string) (*[]model.ToDo, error) {
 	}
 	err = t.view.ShowManyTodo(&todoArray)
 	if err != nil {
-		return nil, err
+		return todos, err
 	}
 
 	return todos, err
 
 }
+
+/*
+Given title it should
+	a. Return a todostruct  array and nil error
+	b. it should return nil todo and non nil error when GetTodoByTitle return error
+	c. It should return non nil todos array when model return todos array and non nil error, but Show Many todo return error
+*/
 
 func (t TodoController) DeleteByTitle(title string) (*model.ToDo, error) {
 	todo, err := t.model.DeleteByTitle(title)
